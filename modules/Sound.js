@@ -7,12 +7,11 @@ class Sound {
             const aplay = spawn('aplay', { shell: false });
 
             aplay.on('close', code => {
-                console.log(`aplay exited with code ${code}`);
-                if (code === 0) {
+                if (code == 0) {
                     resolve();
                 }
                 else {
-                    reject(new Error(`aplay failed with code ${code}`));
+                    reject(`Sound.playAudio aplay.on('close'). code: ${code}`);
                 }
             });
             aplay.stderr.on('data', (data) => {
