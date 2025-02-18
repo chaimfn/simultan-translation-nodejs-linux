@@ -14,8 +14,8 @@ class Recorder {
         this.#audioBuffer = [];
         this.#writableStream = new Writable({
             write: (chunk, encoding, callback) => {
-                console.log("Recorder.constructor. chunk:", type(chunk))
-                this.#audioBuffer.push(chunk); // ה-`this` כעת מצביע לקלאס
+                console.log(`Recorder.#writableStream write. chunk: ${type(chunk)}. encoding: ${encoding}`);
+                this.#audioBuffer.push(chunk);
                 callback();
             }
         });
