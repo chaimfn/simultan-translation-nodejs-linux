@@ -24,7 +24,6 @@ class Recorder {
     async start() {
         console.log("Recorder.start")
         return new Promise((resolve, reject) => {
-            console.log("Recorder.start.promise")
             this.#resolve = resolve;
             this.#recorder = record.record();
             this.#recorder.stream().pipe(this.#writableStream);
