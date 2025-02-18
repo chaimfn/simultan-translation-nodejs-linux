@@ -1,3 +1,11 @@
+const keypress = require('keypress');
+
+const Keys = {
+    CtrlC: '\x03',
+    Esc: '\x1B',
+    Space: ' '
+}
+
 function formatDate() {
     const options = {
         year: 'numeric',
@@ -14,6 +22,23 @@ function formatDate() {
         .replace(/:/g, '-');
 }
 
+function setKeypress(key, callback) {
+    keypress(process.stdin);
+    process.stdin.setRawMode(true);
+    process.stdin.on('keypress', (c, k) => {
+        console.log(c, k)
+        if (k && k.sequence === key) {
+            process.stdin.pause();
+            if (callback) {
+                callback();
+            }
+        }
+    });
+    process.stdin.resume();
+}
+
 module.exports = {
-    formatDate
+    Keys,
+    formatDate,
+    setKeypress
 }
