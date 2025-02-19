@@ -1,10 +1,5 @@
 const keypress = require('keypress');
-
-const Keys = {
-    CtrlC: '\x03',
-    Esc: '\x1B',
-    Space: ' '
-}
+const type = require("type-detect");
 
 function formatDate() {
     const options = {
@@ -22,18 +17,23 @@ function formatDate() {
         .replace(/:/g, '-');
 }
 
-function setKeypress(key, callback) {
+const Keys = {
+    CtrlC: '\x03',
+    Esc: '\x1B',
+    Space: ' '
+}
+
+function setKeypress(callback) {
+    if (!callback) {
+        throw new Error("null args: 'callback'");
+    }
+    if (type(callback) != type(Function)) {
+        throw new Error("'callback' must be a function");
+    }
+
     keypress(process.stdin);
+    process.stdin.on('keypress', (char, key) => { callback(key.sequence) })
     process.stdin.setRawMode(true);
-    process.stdin.on('keypress', (c, k) => {
-        console.log(c, k)
-        if (k && k.sequence === key) {
-            process.stdin.pause();
-            if (callback) {
-                callback();
-            }
-        }
-    });
     process.stdin.resume();
 }
 
